@@ -1,5 +1,27 @@
 [
   {
+    "id": "issue_analysis",
+    "question": "What does bounded interpretation add to this issue?",
+    "requiredInputs": [
+      "validated fact references",
+      "retrieved source excerpts"
+    ],
+    "evaluationMethod": "Validate references and preserve interpretation provenance; graph evidence states remain authoritative",
+    "possibleResults": [
+      "interpreted"
+    ],
+    "nextNodes": [
+      "evidence",
+      "position"
+    ],
+    "provenanceRequirements": [
+      "Source references validated by the server orchestrator"
+    ],
+    "escalationConditions": [
+      "Invalid references rejected"
+    ]
+  },
+  {
     "id": "start",
     "question": "Is this a valid structured case?",
     "requiredInputs": [

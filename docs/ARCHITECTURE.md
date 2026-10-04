@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-The application runs on Next.js App Router and TypeScript. The existing React UI remains a client component using typed session-only mocks. A separate server-side ingestion layer now processes genuine local public documents. Retrieval, assessment, reassessment and evidence-update orchestration remain explicit 501 stubs. A validated domain ontology now models parties, assertions, evidence and source-linked relationships; see [ONTOLOGY.md](ONTOLOGY.md). A deterministic decision graph now evaluates ontology snapshots and stores full traces; see [DECISION_GRAPH.md](DECISION_GRAPH.md). No agent loop or OpenAI call is implemented.
+The application runs on Next.js App Router and TypeScript. The existing React UI remains a client component; the assessment screen now uses the verified server response. A separate server-side ingestion layer now processes genuine local public documents. Retrieval, assessment, reassessment and evidence-update orchestration remain explicit 501 stubs. A validated domain ontology now models parties, assertions, evidence and source-linked relationships; see [ONTOLOGY.md](ONTOLOGY.md). A deterministic decision graph now evaluates ontology snapshots and stores full traces; see [DECISION_GRAPH.md](DECISION_GRAPH.md). A bounded interpretation workflow and `/api/assessment` now connect the existing UI to the graph; see [AGENTIC_FLOW.md](AGENTIC_FLOW.md). The offline presentation needs no key. Live OpenAI calls are server-only and unverified without configuration.
 
 ## Planned pipeline
 

@@ -3,25 +3,22 @@
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
-  action,
   amountInDispute,
-  assess,
-  comparables,
   createCase,
-  extract,
   injectLandlord,
   money,
-  rules,
   validate,
 } from "../mocks/case-state";
 import type {
-  Assessment,
   Case,
   Evidence,
   Party,
   Presence,
 } from "../mocks/case-state";
 import "./deposit-app.css";
+import { submitAssessment } from "../lib/client/assessment";
+import type { ConsumerResult } from "../agents/service";
+import { VerifiedAssessment } from "./verified-assessment";
 
 type Screen =
   | "home"
@@ -56,18 +53,21 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 function App() {
   const [screen, setScreen] = useState<Screen>("home");
   const [c, setCase] = useState<Case>(() => createCase());
-  const [result, setResult] = useState<Assessment | null>(null);
-  const [previous, setPrevious] = useState<Assessment | null>(null);
+  const [result, setResult] = useState<ConsumerResult["assessment"] | null>(null);
+  const [previous, setPrevious] = useState<ConsumerResult["assessment"] | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [draft, setDraft] = useState("");
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const requestVersion = useRef(0);
+  const [caseId, setCaseId] = useState(() => crypto.randomUUID());
+  const [verified, setVerified] = useState<ConsumerResult | null>(null);
+  const [jurisdiction, setJurisdiction] = useState<"IE" | "other">("IE");
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     heading.current?.focus();
     window.scrollTo(0, 0);
   }, [screen]);
-  useEffect(() => () => clearTimeout(timer.current), []);
+
   const go = (s: Screen) => {
     setErrors([]);
     setScreen(s);
@@ -79,6 +79,11 @@ function App() {
       evidence: c.evidence.map((e) => (e.id === id ? { ...e, ...patch } : e)),
     });
   const start = (demo: boolean) => {
+    requestVersion.current++;
+    setBusy(false);
+    setCaseId(crypto.randomUUID());
+    setVerified(null);
+    setJurisdiction("IE");
     setCase(createCase(demo));
     setResult(null);
     setPrevious(null);
@@ -86,22 +91,29 @@ function App() {
     go("situation");
   };
   const review = () => {
-    setCase(extract(c));
     go("facts");
   };
-  const run = () => {
-    const problems = validate(c);
+  const run = async (snapshot: Case = c) => {
+    const problems = validate(snapshot);
     if (problems.length) {
       setErrors(problems);
       return;
     }
     setBusy(true);
-    timer.current = setTimeout(() => {
+    const version = ++requestVersion.current;
+    try {
+      const response = await submitAssessment(snapshot, caseId, verified?.runId ?? null, jurisdiction);
+      if (version !== requestVersion.current) return;
       setPrevious(result);
-      setResult(assess(c));
-      setBusy(false);
+      setVerified(response);
+      setResult(response.assessment);
+      window.scrollTo({ top: 0 });
       go("assessment");
-    }, 450);
+    } catch (error) {
+      if (version === requestVersion.current) setErrors([error instanceof Error ? error.message : "Assessment could not complete."]);
+    } finally {
+      if (version === requestVersion.current) setBusy(false);
+    }
   };
   const input = (
     key: "location" | "deposit" | "returned" | "start" | "end" | "reason",
@@ -121,6 +133,7 @@ function App() {
   );
   const intake = (
     <div className="form-grid">
+      <Field label="Jurisdiction"><select value={jurisdiction} onChange={e => setJurisdiction(e.target.value as "IE" | "other")}><option value="IE">Ireland</option><option value="other">Outside Ireland</option></select></Field>
       {input("location", "County / property location")}
       {input("reason", "Landlord’s stated reason")}
       {input("deposit", "Deposit paid (€)", "number")}
@@ -282,7 +295,7 @@ function App() {
                 </button>
               </div>
               <p className="fine">
-                No account needed. Files stay in this browser session.
+                No account needed. Files are processed on this computer; live interpretation sends their contents to OpenAI when you assess your case.
               </p>
             </div>
             <aside className="preview">
@@ -319,8 +332,7 @@ function App() {
                 </p>
               </div>
               <small>
-                Illustrative assessment. No legal analysis runs in this
-                prototype.
+                Illustrative example. Results are computed from the supplied evidence.
               </small>
             </aside>
           </section>
@@ -338,7 +350,7 @@ function App() {
                       evidence: "What evidence do you have?",
                       facts: "Does this look right?",
                       assessment: result
-                        ? `${money(result.disputed)} is in dispute`
+                        ? result.disputed === null ? "Amount needs clarification" : `${money(result.disputed)} is in dispute`
                         : "Your assessment",
                       update: "Add the next piece of evidence.",
                       action: "Make your next step count.",
@@ -355,13 +367,13 @@ function App() {
                       evidence:
                         "Mark what is available. You can continue with missing evidence.",
                       facts:
-                        "Correct any detail below. Document extraction is mocked and must be checked.",
+                        "Confirm your statements and itemised deductions. Documents will be interpreted when you assess the case.",
                       assessment:
                         "A structured view of your position, with the gaps made visible.",
                       update:
                         "Your previous assessment stays unchanged until you reassess.",
                       action:
-                        "Start by asking for the documents behind the deduction.",
+                        "Follow the next step identified for your evidence.",
                     } as Record<string, string>
                   )[screen]
                 }
@@ -510,39 +522,8 @@ function App() {
                   </button>
                 </section>
                 <section className="panel">
-                  <h2>Evidence-backed facts</h2>
-                  <p className="fine">
-                    Development mock extraction. Selecting a file does not
-                    verify its contents.
-                  </p>
-                  {c.facts.length ? (
-                    c.facts.map((f) => (
-                      <Field
-                        key={f.id}
-                        label={`${f.label} · ${
-                          c.evidence.find((e) => e.id === f.evidenceId)?.type
-                        }`}
-                      >
-                        <input
-                          value={f.value}
-                          onChange={(e) =>
-                            edit({
-                              facts: c.facts.map((v) =>
-                                v.id === f.id
-                                  ? { ...v, value: e.target.value }
-                                  : v
-                              ),
-                            })
-                          }
-                        />
-                      </Field>
-                    ))
-                  ) : (
-                    <p>
-                      No extracted facts yet. Your evidence remains a checklist
-                      until document parsing is implemented.
-                    </p>
-                  )}
+                  <h2>Documents to interpret</h2>
+                  <p className="fine">Availability is your statement. Only supplied files are interpreted. Extracted claims remain candidates; invoice face values are checked separately from liability.</p>
                   <div className="evidence-summary">
                     {c.evidence.map((e) => (
                       <div key={e.id}>
@@ -559,9 +540,9 @@ function App() {
                   </button>
                 </section>
                 <div className="buttons footer-actions">
-                  <button className="primary" disabled={busy} onClick={run}>
+                  <button className="primary" disabled={busy} onClick={() => run()}>
                     {busy
-                      ? "Preparing mock assessment…"
+                      ? "Reviewing evidence and sources…"
                       : result
                       ? "Reassess my position"
                       : "Assess my position"}
@@ -569,192 +550,20 @@ function App() {
                 </div>
               </>
             )}
-            {screen === "assessment" && result && (
-              <>
-                {c.revision !== result.revision && (
-                  <p className="notice">
-                    Your case has edits. This assessment shows the last reviewed
-                    version.
-                    <button className="text-button" onClick={review}>
-                      Review and reassess
-                    </button>
-                  </p>
-                )}
-                {previous && (
-                  <div className="notice" role="status">
-                    <strong>
-                      {previous.position !== result.position
-                        ? "New evidence changed the assessment"
-                        : "Reassessment complete"}
-                    </strong>
-                    <p>
-                      {previous.position} → {result.position}
-                    </p>
-                  </div>
-                )}
-                <div className="assessment-layout">
-                  <div>
-                    <div className="badges">
-                      <span
-                        className={`badge ${
-                          result.position === "Uncertain" ? "amber" : "green"
-                        }`}
-                      >
-                        {result.position}
-                      </span>
-                      <span className="badge neutral">
-                        Confidence: {result.confidence}
-                      </span>
-                    </div>
-                    <p className="fine">
-                      {c.demo
-                        ? "Scripted demo assessment — not a legal conclusion."
-                        : "Placeholder assessment — no analysis has been performed on your case."}
-                    </p>
-                    <section className="question">
-                      <p className="eyebrow">The question that matters</p>
-                      <h2>{result.question}</h2>
-                    </section>
-                    <div className="factor-grid">
-                      {[
-                        ["What supports your position", result.supports],
-                        ["What could support the landlord", result.adverse],
-                        ["What is missing", result.missing],
-                      ].map(([title, items]) => (
-                        <section className="factor" key={title as string}>
-                          <h3>{title as string}</h3>
-                          <ul>
-                            {(items as string[]).length ? (
-                              (items as string[]).map((item) => (
-                                <li key={item}>{item}</li>
-                              ))
-                            ) : (
-                              <li>
-                                {title === "What is missing"
-                                  ? "Listed documents are marked present. Their contents still need verification."
-                                  : "No factors recorded in this mock."}
-                              </li>
-                            )}
-                          </ul>
-                        </section>
-                      ))}
-                    </div>
-                  </div>
-                  <aside className="next-card">
-                    <p className="eyebrow">Recommended next action</p>
-                    <h2>Ask for the evidence.</h2>
-                    <p>{result.action.description}</p>
-                    <button className="primary" onClick={() => go("action")}>
-                      See my next steps
-                    </button>
-                    <div className="divider" />
-                    <small>Escalation</small>
-                    <p>Residential Tenancies Board</p>
-                  </aside>
-                </div>
-                <div className="update-banner">
-                  <div>
-                    <h2>A case can change.</h2>
-                    <p>
-                      Add new documents, check the facts and reassess your
-                      position.
-                    </p>
-                  </div>
-                  <button className="secondary" onClick={() => go("update")}>
-                    Add new evidence
-                  </button>
-                </div>
-                <h2 className="section-title">Rules that matter</h2>
-                <p className="mock-label">
-                  DEVELOPMENT MOCK DATA — illustrative rules, sources not yet
-                  connected
-                </p>
-                <div className="source-grid">
-                  {rules.map((rule) => (
-                    <article className="source" key={rule.id}>
-                      <h3>{rule.title}</h3>
-                      <p>{rule.description}</p>
-                      <small>{rule.sourceLabel}</small>
-                      <p className="fine">Source URL: pending</p>
-                    </article>
-                  ))}
-                </div>
-                <h2 className="section-title">Similar RTB cases</h2>
-                <div className="source-grid">
-                  {comparables.map((item) => (
-                    <article className="source" key={item.id}>
-                      <p className="mock-label">DEVELOPMENT MOCK DATA</p>
-                      <small>{item.id} · fictional example</small>
-                      <h3>{item.name}</h3>
-                      <p>{item.similarity}</p>
-                      <strong>{item.outcome}</strong>
-                      <p>{item.reason}</p>
-                      <small>
-                        Source URL: placeholder — no published case linked
-                      </small>
-                    </article>
-                  ))}
-                </div>
-              </>
+            {screen === "assessment" && verified && result && (
+              <VerifiedAssessment value={verified} previous={previous} busy={busy} showAddLandlord={c.demo && !c.evidence.some(e => e.id === "6" && e.status === "present")} onAddLandlord={() => { const updated = injectLandlord(c); setCase(updated); void run(updated); }} onUpdate={() => go("update")} onAction={() => go("action")} />
             )}
-            {screen === "action" && (
+            {screen === "action" && result && (
               <div className="action-layout">
                 <section className="panel">
-                  <h2>Before escalating, ask for:</h2>
-                  {action.checklist.map((item) => (
-                    <label className="check" key={item}>
-                      <input type="checkbox" />
-                      {item}
-                    </label>
-                  ))}
-                  <button
-                    className="primary"
-                    onClick={() =>
-                      setDraft(
-                        `Hello,\n\nRegarding the ${money(
-                          amountInDispute(c)
-                        )} retained from my deposit, please provide an itemised breakdown of deductions, supporting photographs, invoices or estimates, and the move-in condition evidence.\n\nPlease also return any undisputed deposit and clarify the reason for each deduction.\n\nThank you.`
-                      )
-                    }
-                  >
-                    Prepare evidence request
-                  </button>
-                  <button
-                    className="text-button"
-                    onClick={() => go("assessment")}
-                  >
-                    Back to assessment
-                  </button>
+                  <h2>Your next step</h2><p>{result.action.description}</p>
+                  {result.action.checklist.map(item => <label className="check" key={item}><input type="checkbox" />{item}</label>)}
+                  <button className="primary" onClick={() => setDraft(`Hello,\n\nRegarding the deposit, I would like to clarify: ${result.action.description}.\n\nPlease provide the relevant supporting documents.\n\nThank you.`)}>Prepare a request</button>
+                  <button className="text-button" onClick={() => go("assessment")}>Back to assessment</button>
                 </section>
-                <section className="panel">
-                  <h2>
-                    {draft
-                      ? "Your evidence request"
-                      : "A request you can review"}
-                  </h2>
-                  {draft ? (
-                    <>
-                      <Field label="Edit before copying">
-                        <textarea
-                          rows={12}
-                          value={draft}
-                          onChange={(e) => setDraft(e.target.value)}
-                        />
-                      </Field>
-                      <p className="fine">
-                        Select and copy the text above. Nothing is sent
-                        automatically.
-                      </p>
-                    </>
-                  ) : (
-                    <p>
-                      Prepare an editable message asking for the missing
-                      documents.
-                    </p>
-                  )}
-                  <hr />
-                  <h3>Escalation</h3>
-                  <p>{action.escalation}</p>
+                <section className="panel"><h2>A request you can review</h2>
+                  {draft ? <Field label="Edit before copying"><textarea rows={10} value={draft} onChange={e => setDraft(e.target.value)} /></Field> : <p>Prepare a message you can edit and copy. Nothing is sent automatically.</p>}
+                  <h3>Escalation</h3><p>{result.action.escalation}</p>
                 </section>
               </div>
             )}
@@ -764,7 +573,7 @@ function App() {
       <footer className="site-footer">
         <span>depositcheck</span>
         <span>
-          Mock UI only · No AI or document parsing · Refresh clears your case
+          Local prototype · Assessments saved on this computer
         </span>
       </footer>
     </div>

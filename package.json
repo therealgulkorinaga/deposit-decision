@@ -15,7 +15,8 @@
     "typecheck": "tsc --noEmit",
     "ingest": "node --conditions=react-server --import tsx scripts/ingest.ts",
     "seed:public": "node --conditions=react-server --import tsx scripts/seed-public.ts",
-    "graph": "node --conditions=react-server --import tsx scripts/decision-graph.ts"
+    "graph": "node --conditions=react-server --import tsx scripts/decision-graph.ts",
+    "flow:inspect": "node --conditions=react-server --import tsx scripts/flow-inspect.ts"
   },
   "dependencies": {
     "@next/env": "^16.3.8",

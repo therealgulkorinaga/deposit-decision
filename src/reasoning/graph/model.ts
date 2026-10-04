@@ -12,7 +12,8 @@ export const CatalogueEntrySchema = z.object({
   reviewedOn: z.iso.date(), reviewBy: z.iso.date(),
 }).strict().refine(e => e.reviewBy >= e.reviewedOn, "Invalid source review window")
   .refine(e => e.scope !== "legislation" || (e.rule.kind === "legislation" && e.rule.sources.every(s => s.documentType === "legislation")), "Legislation scope requires legislative sources");
-export const OptionsSchema = z.object({ asOf: z.iso.date(), catalogue: z.array(CatalogueEntrySchema), evidenceAssignments: z.array(AssignmentSchema).default([]) }).strict();
+export const GraphIssueAnalysisSchema = z.object({ issueId: z.string(), supportingFactIds: z.array(z.string()), adverseFactIds: z.array(z.string()), missingFactTypes: z.array(z.string()), sourceReferences: z.array(SourceSchema) }).strict();
+export const OptionsSchema = z.object({ asOf: z.iso.date(), catalogue: z.array(CatalogueEntrySchema), evidenceAssignments: z.array(AssignmentSchema).default([]), issueAnalyses: z.array(GraphIssueAnalysisSchema).optional() }).strict();
 export const RequestSchema = z.object({ case: CaseSchema, options: OptionsSchema }).strict();
 export type Options = z.infer<typeof OptionsSchema>;
 export type CatalogueEntry = z.infer<typeof CatalogueEntrySchema>;

@@ -1,55 +1,48 @@
-# Depositcheck
+# Depositcheck / Verdict
 
-Irish rental-deposit UI prototype with a Next.js / TypeScript backend environment.
+Evidence-led Irish rental deposit assessment with a working offline hackathon demo.
 
-## Run locally
+## Run the presentation
 
-Use Node 24+ (see `.nvmrc`).
+Use the prepared checkout and keep its local `data/` directory. Node 24+.
 
 ```sh
-npm install
-npm run env:check
-npm run db:init
-npm run dev
+cd /Users/arkoganguli/Projects/deposit-decision
+npm run build
+npm start
 ```
 
-Open http://127.0.0.1:5173. Copy `.env.local.example` to `.env.local` when configuring your own environment. A blank OpenAI key is valid for this step. No SDK calls are made.
+Open http://127.0.0.1:5173. The production server is already running after verification.
 
-## Verify
+**Exact demo:** Try an example case → Continue to evidence → Review my case → Assess my position. Show **€1,000 in dispute / Worth pursuing / Medium** and the three RTB sources. Click **Add landlord evidence** on the assessment. It adds the painting invoice and photographs, calls the backend again and prominently shows **BEFORE Worth pursuing → AFTER Uncertain**, with Medium confidence and the reasons for the change.
+
+No OpenAI key is needed for this presentation. The fixture interpreter is labelled in the interface. It does not set the position: the existing decision graph computes both assessments. Removing the landlord evidence also recomputes the initial position.
+
+## What is implemented
+
+UI → Case State → private document ingestion → candidate facts and evidence classification → ontology → issue mapping → separate rule/case retrieval → issue analysis → deterministic Decision Graph → explanation → verification → assessment UI.
+
+Application code owns calculations, jurisdiction, state updates, source identity, graph transitions, confidence limits, escalation and actions. Six bounded interpreter stages handle extraction, classification, mapping, issue analysis, explanation selection and verification. There are no open-ended loops or autonomously spawned agents.
+
+`POST /api/assessment` is the connected workflow. Legacy Step 1 routes still return 501 and are not used by the presentation. Debug logs are local under `data/flows/`; private uploaded files are under `data/private/`. Neither is committed or returned in the consumer response.
+
+## Optional live interpretation
+
+Copy `.env.local.example` to `.env.local` and configure `OPENAI_API_KEY` plus `OPENAI_MODEL` on the server. The OpenAI Responses adapter uses structured output, no tools, no retries, bounded calls and `store: false`. It has not been tested with a live key in this session. Without configuration, live cases return a clear unavailable message while the example works normally. No new provider is needed.
+
+## Sources and verification
+
+The local corpus contains **7 genuine RTB documents**: evidence guidance, security-deposit guidance and **5 tribunal reports**. The presentation shows two guidance sources and one retrieved report. Report excerpts retain actual document IDs, URLs, pages and sections; no invented precedent cards are used.
 
 ```sh
-npm run lint
 npm test
+npm run lint
+npm run typecheck
 npm run build
 npm run check:client
+npm run flow:inspect -- RUN_UUID
 ```
 
-`npm start` serves the production build on the same local address.
+All 52 tests passed on the prepared corpus. The exact offline workflow, real-source retrieval, evidence reversal, verifier fallback and HTTP guard are tested. The full presentation sequence was also verified in the browser. Corpus-dependent tests explicitly skip when the local corpus is absent.
 
-## Mock demonstration
-
-Choose **Try an example case**, follow the steps to **Worth pursuing**, then **Add new evidence → Add landlord evidence → Review my case → Reassess my position** to see **Uncertain**. The UI remains session-only and uses mock assessments, rules, case references and extraction. Files are not uploaded. Messages are not sent.
-
-## Backend setup
-
-Public document ingestion is implemented; retrieval, assessment, evidence orchestration and reassessment still return HTTP 501. Local SQLite repositories support cases, evidence metadata and public-document metadata. `POST /api/cases` and `GET /api/cases/[caseId]` exercise case persistence; `GET /api/health` verifies readiness. The existing UI is not connected to these APIs yet.
-
-## Public data ingestion
-
-Drop PDF, HTML, TXT or JSON documents into `data/raw/`, with optional `<filename>.meta.json` source metadata, then run:
-
-```sh
-npm run ingest
-```
-
-The command works without the frontend or any API key. Processed JSON and a provenance manifest are written to `data/processed/`; reruns skip unchanged documents. `npm run seed:public` optionally downloads the six verified public RTB sources (five case reports and an evidence guide). Local data is gitignored.
-
-See [ingestion instructions](docs/INGESTION.md) for sources, manual downloads, output format, provenance, recovery and the current genuine corpus.
-
-See [architecture](docs/ARCHITECTURE.md) for the planned pipeline, boundaries, environment and API details, and [UI logic](docs/UI_LOGIC.md) for the existing mock flow.
-
-## Decision graph
-
-Run `npm run graph -- --demo` for the deterministic ontology demonstration. It recomputes Worth pursuing / Medium to Uncertain / Medium after new landlord evidence, and saves full traces under `data/assessments/`. It runs without an LLM. The UI and legacy API routes remain unchanged.
-
-See [decision graph](docs/DECISION_GRAPH.md) for node definitions, rule sources, evidence dependencies and reassessment, and [ontology](docs/ONTOLOGY.md) for the underlying domain model.
+See [agentic flow](docs/AGENTIC_FLOW.md), [decision graph](docs/DECISION_GRAPH.md), [ontology](docs/ONTOLOGY.md), and [ingestion](docs/INGESTION.md).

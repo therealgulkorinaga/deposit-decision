@@ -115,6 +115,12 @@ export function evaluateCase(input: Case, suppliedOptions: Options): GraphResult
       evaluation.ruleAvailable = applicable.some(e => e.scope === "evidence_guidance") && applicable.some(e => e.scope === "deduction_guidance" || e.scope === "legislation");
       evaluation.sources = sources([...evaluation.sources, ...applicable.flatMap(e => e.rule.sources)]);
       trace("rules", evaluation.ruleAvailable ? "available" : "unavailable", evaluation.ruleAvailable ? "Retrieved reviewed, source-linked guidance for this issue" : "No reliable applicable evidence and deduction rule coverage; expert review required", [], evaluation);
+      const interpretation = options.issueAnalyses?.find(a => a.issueId === evaluation.issue.id);
+      if (interpretation) {
+        if ([...interpretation.supportingFactIds, ...interpretation.adverseFactIds].some(id => !evaluation.factIds.includes(id))) throw new Error("Analysis refers to facts outside this issue");
+        evaluation.sources = sources([...evaluation.sources, ...interpretation.sourceReferences]);
+        trace("issue_analysis", "interpreted", `Checked interpretation: ${interpretation.supportingFactIds.length} tenant fact references, ${interpretation.adverseFactIds.length} landlord fact references. Interpretation does not establish facts or override graph gates.`, [], evaluation);
+      }
       result.issues.push(evaluation);
     }
   }
