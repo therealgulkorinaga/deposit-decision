@@ -7,7 +7,7 @@ import {
   extract,
   injectLandlord,
   validate,
-} from "./src/model.ts";
+} from "../src/mocks/case-state.ts";
 
 test("disputed amount is deterministic and cents-safe", () => {
   assert.equal(amountInDispute(createCase(true)), 1000);

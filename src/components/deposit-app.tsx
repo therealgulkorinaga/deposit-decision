@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
@@ -11,9 +13,15 @@ import {
   money,
   rules,
   validate,
-} from "./model";
-import type { Assessment, Case, Evidence, Party, Presence } from "./model";
-import "./App.css";
+} from "../mocks/case-state";
+import type {
+  Assessment,
+  Case,
+  Evidence,
+  Party,
+  Presence,
+} from "../mocks/case-state";
+import "./deposit-app.css";
 
 type Screen =
   | "home"

@@ -11,6 +11,23 @@ node_modules
 dist
 dist-ssr
 *.local
+.env*
+!.env.local.example
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+data/*
+!data/README.md
+!data/raw/
+!data/processed/
+!data/rules/
+!data/cases/
+data/raw/*
+data/processed/*
+data/rules/*
+data/cases/*
+!data/**/.gitkeep
 
 # Editor directories and files
 .vscode/*

@@ -18,7 +18,7 @@ Fact confirmation: user statements and deductions are editable, separately from 
 
 ## State model
 
-`Case`, `Party`, `Claim`, `Fact`, `Evidence`, `Assessment`, `RuleReference`, `ComparableCase`, `RecommendedAction` are UI contracts in src/model.ts. Case revision increments on edits. Assessments capture revision and disputed amount. Existing assessments remain visible as snapshots while edits are pending. The application owns current and previous assessment separately from current case data. These are not a legal ontology.
+`Case`, `Party`, `Claim`, `Fact`, `Evidence`, `Assessment`, `RuleReference`, `ComparableCase`, `RecommendedAction` are UI contracts in src/mocks/case-state.ts. Case revision increments on edits. Assessments capture revision and disputed amount. Existing assessments remain visible as snapshots while edits are pending. The application owns current and previous assessment separately from current case data. These are not a legal ontology. Step 1 runs the same UI under Next.js, with separate backend contracts described in ARCHITECTURE.md; the UI still uses mocks.
 
 ## Assessment and output
 
