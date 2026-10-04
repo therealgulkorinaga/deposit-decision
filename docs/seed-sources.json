@@ -1,0 +1,32 @@
+[
+  {
+    "file": "TR1219-004124.pdf",
+    "sourceUrl": "https://www.rtb.ie/wp-content/uploads/2025/05/TR1219-004124-DR1019-57847.pdf",
+    "sha256": "dd5d1a1625f3d4aed63b86bcf67f65a8c8826f632a498e9a4f09cc2f3db4ae2e"
+  },
+  {
+    "file": "TR0225-008504.pdf",
+    "sourceUrl": "https://www.rtb.ie/wp-content/uploads/2025/09/TR0225-008504-DR1124-100828-Tribunal-report.pdf",
+    "sha256": "ab1b7e3446b10d3780b3b92aeb566773068cce52c83ff03570734e36d9120dce"
+  },
+  {
+    "file": "1016-Tribunal-report-issued.pdf",
+    "sourceUrl": "https://rtb.ie/wp-content/uploads/2026/06/1016-Tribunal-report-issued.pdf",
+    "sha256": "5af4320e8ed4265720f3211307a6ddb6c3e9c1496d06d40fc67487125d75319a"
+  },
+  {
+    "file": "TR0625-008843.pdf",
+    "sourceUrl": "https://rtb.ie/wp-content/uploads/2025/11/TR0625-008843-DR1124-101040-Tribunal-report.pdf",
+    "sha256": "40f418baab615856d3d8481bef875040c81b1eb0eaaa2d5812ed35c437e7c346"
+  },
+  {
+    "file": "TR0519-003760.pdf",
+    "sourceUrl": "https://www.rtb.ie/wp-content/uploads/2025/05/TR0519-003760_Report.pdf",
+    "sha256": "38f812980b409efdee9489f187a9fc73e6e7adeabc6d8730c2e637ed1da9a968"
+  },
+  {
+    "file": "guide-to-evidence.html",
+    "sourceUrl": "https://rtb.ie/disputes/guide-to-evidence/",
+    "sha256": null
+  }
+]

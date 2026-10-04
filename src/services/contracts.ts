@@ -6,18 +6,16 @@ import {
   EvidenceInputSchema,
   EvidenceSchema,
   IdSchema,
-  PublicDocumentInputSchema,
-  PublicDocumentSchema,
   RuleReferenceSchema,
   StructuredAssessmentSchema,
 } from "../domain/schemas";
 
-export const IngestDocumentRequestSchema = z
-  .object({ document: PublicDocumentInputSchema })
-  .strict();
-export const IngestDocumentResultSchema = z
-  .object({ document: PublicDocumentSchema })
-  .strict();
+import {
+  IngestionRequestSchema,
+  IngestionResultSchema,
+} from "../ingestion/schemas";
+export const IngestDocumentRequestSchema = IngestionRequestSchema;
+export const IngestDocumentResultSchema = IngestionResultSchema;
 export const RetrieveCasesRequestSchema = z
   .object({
     query: z.string().trim().min(1).max(4000),

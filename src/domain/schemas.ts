@@ -97,9 +97,9 @@ export const EvidenceSchema = z
   .strict();
 export const PublicDocumentInputSchema = z
   .object({
-    title: z.string().trim().min(1).max(500),
-    sourceUrl: z.url({ protocol: /^https?$/ }),
-    kind: z.enum(["rule", "case", "guidance"]),
+    title: z.string().trim().min(1).max(1000),
+    sourceUrl: z.url({ protocol: /^https?$/ }).nullable(),
+    kind: z.enum(["rule", "case", "guidance", "statistics", "unknown"]),
     rawPath: RelativeFileSchema,
     processedPath: RelativeFileSchema.optional(),
     sha256: z.string().regex(/^[a-f0-9]{64}$/),

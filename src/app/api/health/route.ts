@@ -16,7 +16,7 @@ export async function GET() {
     return Response.json({
       status: "ok",
       database: "sqlite",
-      pipeline: "not_implemented",
+      pipeline: "ingestion_only",
       ui: "mock",
     });
   } catch {

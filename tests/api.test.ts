@@ -4,7 +4,6 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { z } from "zod";
-import { POST as ingest } from "../src/app/api/ingestion/documents/route";
 import { POST as retrieveCases } from "../src/app/api/retrieval/cases/route";
 import { POST as retrieveRules } from "../src/app/api/retrieval/rules/route";
 import { POST as assess } from "../src/app/api/claims/assess/route";
@@ -18,7 +17,6 @@ import {
   caseId,
   caseInput,
   claimContext,
-  documentInput,
   evidenceId,
   evidenceInput,
   previousAssessment,
@@ -31,9 +29,8 @@ const request = (body: unknown) =>
     headers: { "content-type": "application/json" },
   });
 
-test("all six valid pipeline requests explicitly return 501; no reasoning runs", async () => {
-  const operations: [typeof ingest, unknown][] = [
-    [ingest, { document: documentInput }],
+test("five deferred pipeline requests explicitly return 501; no reasoning runs", async () => {
+  const operations: [typeof retrieveCases, unknown][] = [
     [retrieveCases, { query: "painting" }],
     [retrieveRules, { query: "deposit" }],
     [assess, claimContext],
