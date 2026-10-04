@@ -87,3 +87,7 @@ These are generated from the exported factories and tested against them, so they
 Keep Evidence, Fact, Source, Issue, Decision and relationship semantics reusable. A future consumer-refund model can add a discriminated claim variant with purchase/refund amounts and extend evidence types for purchase confirmations and return tracking. Its issues might ask whether goods were returned or a refund was received. Jurisdiction-specific, sourced rules remain separate from asserted facts. Add a schema version and explicit migration when changing stored shapes. Do not reinterpret tenancy fields as purchase fields, reuse RTB rules outside their jurisdiction, or merge public-case findings into the current user's established facts.
 
 Run `npm test`, `npm run typecheck`, `npm run lint`, and `npm run build`. Ontology tests require no network, credentials or local corpus. No agents, assessment engine, final decision graph or UI flow changes are introduced.
+
+## Subsequent graph integration
+
+The ontology remains independently usable. The deterministic [decision graph](DECISION_GRAPH.md) now creates scoped Issue records and evaluations from these entities, while keeping existing UI/API transport models unchanged. Original source text retains whitespace exactly so raw ingestion offsets continue to match.

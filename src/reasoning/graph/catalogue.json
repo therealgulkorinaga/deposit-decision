@@ -1,0 +1,94 @@
+[
+  {
+    "rule": {
+      "id": "rtb:evidence_guidance:2026-10-04",
+      "topic": "deposit_retention",
+      "jurisdiction": "IE",
+      "kind": "guidance",
+      "effectiveDate": null,
+      "source": "Residential Tenancies Board",
+      "summary": "RTB identifies examples of evidence for deposit disputes.",
+      "sources": [
+        {
+          "sourceDocumentId": "bf798ba9-589d-53b4-9e6a-dd8fa4786537",
+          "sourceUrl": "https://rtb.ie/disputes/guide-to-evidence/",
+          "documentTitle": "Guide to evidence",
+          "documentType": "rtb_guidance",
+          "date": null,
+          "pageNumber": null,
+          "sectionHeading": "Deposit retention case",
+          "checksum": "a2d3b9f457976cd5d87927337c0e0f161adc60e9ff3caa0c0dac76f29ab52b3c",
+          "rawStart": 2394,
+          "rawEnd": 2682,
+          "chunkId": "bf798ba9-589d-53b4-9e6a-dd8fa4786537:2394-2682",
+          "originalText": "Deposit retention case\n\nLetting agreement\n\nEvidence of payment of deposit or rent\n\nInventory and condition report at the start of the tenancy and end of the tenancy\n\nWitness statements\n\nBank statements\n\nPhotographic evidence\n\nOutstanding utility bills\n\nCleaning or redecorating invoices\n\n"
+        }
+      ]
+    },
+    "issueTypes": [
+      "painting_required",
+      "tenant_caused_damage",
+      "damage_beyond_ordinary_wear",
+      "painting_invoice_amount",
+      "cleaning_required",
+      "cleaning_beyond_ordinary_use",
+      "cleaning_invoice_amount",
+      "damage_invoice_amount",
+      "rent_arrears_outstanding",
+      "rent_arrears_amount",
+      "tenant_responsible_for_utilities",
+      "utility_arrears_amount",
+      "tenant_responsible_for_missing_items",
+      "missing_items_invoice_amount"
+    ],
+    "scope": "evidence_guidance",
+    "reviewedOn": "2026-10-04",
+    "reviewBy": "2027-04-04"
+  },
+  {
+    "rule": {
+      "id": "rtb:deduction_guidance:2026-10-04",
+      "topic": "deposit_retention",
+      "jurisdiction": "IE",
+      "kind": "guidance",
+      "effectiveDate": null,
+      "source": "Residential Tenancies Board",
+      "summary": "RTB describes deduction grounds including arrears, tenant-responsible bills and damage beyond ordinary wear.",
+      "sources": [
+        {
+          "sourceDocumentId": "10e638cb-94c7-597a-89a9-bb2d1bb7b79d",
+          "sourceUrl": "https://rtb.ie/renting/rights-responsibilities/security-deposits/",
+          "documentTitle": "Security deposits",
+          "documentType": "rtb_guidance",
+          "date": null,
+          "pageNumber": null,
+          "sectionHeading": "Reasons for keeping the deposit",
+          "checksum": "951d4b042870a131d017b70898adbae845786bd8c85bfae22e935ec8dea20525",
+          "rawStart": 1956,
+          "rawEnd": 2605,
+          "chunkId": "10e638cb-94c7-597a-89a9-bb2d1bb7b79d:1956-2605",
+          "originalText": "Reasons for keeping the deposit\n\nA landlord can keep all or part of the deposit for:\n\nRent arrears: if you owe rent at the end of the tenancy, the landlord can deduct the amount you owe from the deposit.\n\nUnpaid bills: if you have not paid utility bills that you are responsible for under the lease or tenancy agreement, the deposit can be used to cover the unpaid bills.\n\nDamage: above normal wear and tear such as broken windows, holes in walls, leaving the property in an unhygienic or unsafe condition, missing or broken items.\n\nInsufficient notice: if you don’t give the correct notice or end a fixed-term tenancy early, deductions can apply.\n\n"
+        }
+      ]
+    },
+    "issueTypes": [
+      "painting_required",
+      "tenant_caused_damage",
+      "damage_beyond_ordinary_wear",
+      "painting_invoice_amount",
+      "cleaning_required",
+      "cleaning_beyond_ordinary_use",
+      "cleaning_invoice_amount",
+      "damage_invoice_amount",
+      "rent_arrears_outstanding",
+      "rent_arrears_amount",
+      "tenant_responsible_for_utilities",
+      "utility_arrears_amount",
+      "tenant_responsible_for_missing_items",
+      "missing_items_invoice_amount"
+    ],
+    "scope": "deduction_guidance",
+    "reviewedOn": "2026-10-04",
+    "reviewBy": "2027-04-04"
+  }
+]

@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-The application runs on Next.js App Router and TypeScript. The existing React UI remains a client component using typed session-only mocks. A separate server-side ingestion layer now processes genuine local public documents. Retrieval, assessment, reassessment and evidence-update orchestration remain explicit 501 stubs. A validated domain ontology now models parties, assertions, evidence and source-linked relationships; see [ONTOLOGY.md](ONTOLOGY.md). No decision graph, agent loop or OpenAI call is implemented.
+The application runs on Next.js App Router and TypeScript. The existing React UI remains a client component using typed session-only mocks. A separate server-side ingestion layer now processes genuine local public documents. Retrieval, assessment, reassessment and evidence-update orchestration remain explicit 501 stubs. A validated domain ontology now models parties, assertions, evidence and source-linked relationships; see [ONTOLOGY.md](ONTOLOGY.md). A deterministic decision graph now evaluates ontology snapshots and stores full traces; see [DECISION_GRAPH.md](DECISION_GRAPH.md). No agent loop or OpenAI call is implemented.
 
 ## Planned pipeline
 
@@ -14,7 +14,7 @@ The real data pipeline currently ends here:
 
 Public document → data/raw → local parser → metadata / source sections → provenance chunks → processed JSON + manifest + SQLite metadata
 
-Later retrieval can select only source-linked chunks from the active manifest. The ontology now connects issues, facts and evidence structurally. A future decision graph may evaluate those relationships; a later agent flow may orchestrate analysis. Neither reasoning stage exists yet. Structured assessment remains a schema contract.
+Later retrieval can select only source-linked chunks from the active manifest. The ontology now connects issues, facts and evidence structurally. The deterministic graph now evaluates those relationships through explicit gates, issue templates, evidence dependencies and reviewed source lookup. Its pure functions and local CLI work independently of the mock UI and legacy assessment API contracts. A later agent flow may orchestrate analysis; none exists yet.
 
 ## Directory ownership
 
@@ -27,7 +27,7 @@ Later retrieval can select only source-linked chunks from the active manifest. T
 | `src/services/`          | Request/result contracts and service composition                                      |
 | `src/ingestion/`         | Local parsers, conservative classification, chunking, manifests and idempotent runner |
 | `src/retrieval/`         | Rule and case retrieval stubs                                                         |
-| `src/reasoning/`         | Assessment/reassessment stubs                                                         |
+| `src/reasoning/`         | Deterministic ontology graph and trace store; legacy API adapters remain stubs                                                         |
 | `src/lib/server/`        | Environment, SQLite, repositories and HTTP helpers                                    |
 | `src/instrumentation.ts` | Server environment validation at startup                                              |
 | `data/`                  | Ignored local raw/processed/rules/cases folders and SQLite database                   |

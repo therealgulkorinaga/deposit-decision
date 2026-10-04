@@ -14,7 +14,8 @@
     "check:client": "node --import tsx scripts/check-client-bundle.ts",
     "typecheck": "tsc --noEmit",
     "ingest": "node --conditions=react-server --import tsx scripts/ingest.ts",
-    "seed:public": "node --conditions=react-server --import tsx scripts/seed-public.ts"
+    "seed:public": "node --conditions=react-server --import tsx scripts/seed-public.ts",
+    "graph": "node --conditions=react-server --import tsx scripts/decision-graph.ts"
   },
   "dependencies": {
     "@next/env": "^16.3.8",

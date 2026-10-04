@@ -47,3 +47,9 @@ The command works without the frontend or any API key. Processed JSON and a prov
 See [ingestion instructions](docs/INGESTION.md) for sources, manual downloads, output format, provenance, recovery and the current genuine corpus.
 
 See [architecture](docs/ARCHITECTURE.md) for the planned pipeline, boundaries, environment and API details, and [UI logic](docs/UI_LOGIC.md) for the existing mock flow.
+
+## Decision graph
+
+Run `npm run graph -- --demo` for the deterministic ontology demonstration. It recomputes Worth pursuing / Medium to Uncertain / Medium after new landlord evidence, and saves full traces under `data/assessments/`. It runs without an LLM. The UI and legacy API routes remain unchanged.
+
+See [decision graph](docs/DECISION_GRAPH.md) for node definitions, rule sources, evidence dependencies and reassessment, and [ontology](docs/ONTOLOGY.md) for the underlying domain model.

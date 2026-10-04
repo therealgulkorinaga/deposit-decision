@@ -10,7 +10,7 @@ export const PositionSchema = z.enum(["strong", "worth_pursuing", "uncertain", "
 export const EvidenceTypeSchema = z.enum(["tenancy_agreement", "inventory", "photograph", "invoice", "bank_record", "message", "receipt", "utility_record", "witness_statement", "other"]);
 export const SourceSchema = ProvenanceSchema.extend({
   sourceUrl: z.url({ protocol: /^https?$/ }), checksum: z.string().regex(/^[a-f0-9]{64}$/),
-  chunkId: Id, originalText: Text,
+  chunkId: Id, originalText: z.string().min(1),
 }).strict().refine(s => s.rawEnd > s.rawStart && s.originalText.length === s.rawEnd - s.rawStart, "Source offsets must preserve exact original text");
 export const PartySchema = z.object({ id: Id, type: z.enum(["tenant", "landlord", "property_manager", "other"]), name: Text }).strict();
 export const ClaimSchema = z.object({ id: Id, type: z.literal("deposit_retention"), currency: z.literal("EUR"), amountClaimedCents: Cents, amountDisputedCents: Cents, claimant: Id, respondent: Id, status: z.enum(["open", "withdrawn", "settled", "determined"]) }).strict().refine(c => c.amountDisputedCents <= c.amountClaimedCents && c.claimant !== c.respondent, "Invalid claim amounts or parties");
