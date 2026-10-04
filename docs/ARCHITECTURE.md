@@ -2,7 +2,7 @@
 
 ## Current boundary
 
-The application runs on Next.js App Router and TypeScript. The existing React UI remains a client component using typed session-only mocks. A separate server-side ingestion layer now processes genuine local public documents. Retrieval, assessment, reassessment and evidence-update orchestration remain explicit 501 stubs. No legal ontology, decision graph, agent loop or OpenAI call is implemented.
+The application runs on Next.js App Router and TypeScript. The existing React UI remains a client component using typed session-only mocks. A separate server-side ingestion layer now processes genuine local public documents. Retrieval, assessment, reassessment and evidence-update orchestration remain explicit 501 stubs. A validated domain ontology now models parties, assertions, evidence and source-linked relationships; see [ONTOLOGY.md](ONTOLOGY.md). No decision graph, agent loop or OpenAI call is implemented.
 
 ## Planned pipeline
 
@@ -14,7 +14,7 @@ The real data pipeline currently ends here:
 
 Public document → data/raw → local parser → metadata / source sections → provenance chunks → processed JSON + manifest + SQLite metadata
 
-Later retrieval can select only source-linked chunks from the active manifest. A future graph may connect issues, facts and evidence; a later agent flow may orchestrate analysis. Neither stage exists yet. Structured assessment remains a schema contract.
+Later retrieval can select only source-linked chunks from the active manifest. The ontology now connects issues, facts and evidence structurally. A future decision graph may evaluate those relationships; a later agent flow may orchestrate analysis. Neither reasoning stage exists yet. Structured assessment remains a schema contract.
 
 ## Directory ownership
 

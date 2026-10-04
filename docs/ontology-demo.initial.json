@@ -1,0 +1,381 @@
+{
+  "schemaVersion": 1,
+  "id": "demo:deposit-dispute",
+  "recordKind": "illustrative_demo",
+  "jurisdiction": "IE",
+  "claimType": "deposit_retention",
+  "status": "under_review",
+  "position": null,
+  "parties": [
+    {
+      "id": "tenant",
+      "type": "tenant",
+      "name": "Demo tenant"
+    },
+    {
+      "id": "landlord",
+      "type": "landlord",
+      "name": "Demo landlord"
+    }
+  ],
+  "claims": [
+    {
+      "id": "deposit-claim",
+      "type": "deposit_retention",
+      "currency": "EUR",
+      "amountClaimedCents": 100000,
+      "amountDisputedCents": 100000,
+      "claimant": "tenant",
+      "respondent": "landlord",
+      "status": "open"
+    }
+  ],
+  "facts": [
+    {
+      "id": "deposit_paid",
+      "type": "deposit_paid",
+      "value": {
+        "kind": "money",
+        "cents": 150000,
+        "currency": "EUR"
+      },
+      "assertedBy": "tenant",
+      "origin": "party_assertion",
+      "evidenceIds": [],
+      "verificationState": "asserted",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "deposit_returned",
+      "type": "deposit_returned",
+      "value": {
+        "kind": "money",
+        "cents": 50000,
+        "currency": "EUR"
+      },
+      "assertedBy": "tenant",
+      "origin": "party_assertion",
+      "evidenceIds": [],
+      "verificationState": "asserted",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "painting_deduction",
+      "type": "painting_deduction",
+      "value": {
+        "kind": "money",
+        "cents": 70000,
+        "currency": "EUR"
+      },
+      "assertedBy": "tenant",
+      "origin": "party_assertion",
+      "evidenceIds": [],
+      "verificationState": "asserted",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "cleaning_deduction",
+      "type": "cleaning_deduction",
+      "value": {
+        "kind": "money",
+        "cents": 30000,
+        "currency": "EUR"
+      },
+      "assertedBy": "tenant",
+      "origin": "party_assertion",
+      "evidenceIds": [],
+      "verificationState": "asserted",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "tenancy_duration_months",
+      "type": "tenancy_duration_months",
+      "value": {
+        "kind": "months",
+        "months": 36
+      },
+      "assertedBy": "tenant",
+      "origin": "party_assertion",
+      "evidenceIds": [],
+      "verificationState": "asserted",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "tenant_caused_damage",
+      "type": "tenant_caused_damage",
+      "value": null,
+      "assertedBy": null,
+      "origin": "unknown",
+      "evidenceIds": [],
+      "verificationState": "unknown",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "damage_beyond_ordinary_wear",
+      "type": "damage_beyond_ordinary_wear",
+      "value": null,
+      "assertedBy": null,
+      "origin": "unknown",
+      "evidenceIds": [],
+      "verificationState": "unknown",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "painting_invoice_amount",
+      "type": "painting_invoice_amount",
+      "value": null,
+      "assertedBy": null,
+      "origin": "unknown",
+      "evidenceIds": [],
+      "verificationState": "missing",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "cleaning_invoice_amount",
+      "type": "cleaning_invoice_amount",
+      "value": null,
+      "assertedBy": null,
+      "origin": "unknown",
+      "evidenceIds": [],
+      "verificationState": "missing",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "landlord_damage_photographs_supplied",
+      "type": "landlord_damage_photographs_supplied",
+      "value": null,
+      "assertedBy": null,
+      "origin": "unknown",
+      "evidenceIds": [],
+      "verificationState": "missing",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    },
+    {
+      "id": "landlord_condition_report_supplied",
+      "type": "landlord_condition_report_supplied",
+      "value": null,
+      "assertedBy": null,
+      "origin": "unknown",
+      "evidenceIds": [],
+      "verificationState": "missing",
+      "confidence": null,
+      "occurredAt": null,
+      "sources": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "tenancy-agreement",
+      "type": "tenancy_agreement",
+      "sourceParty": "tenant",
+      "documentReference": {
+        "id": "demo-document:tenancy-agreement",
+        "label": "Illustrative tenancy-agreement; no actual file supplied",
+        "kind": "demo_placeholder",
+        "sources": []
+      },
+      "date": null,
+      "reviewState": "unreviewed",
+      "reviewNote": ""
+    },
+    {
+      "id": "move-in-photos",
+      "type": "photograph",
+      "sourceParty": "tenant",
+      "documentReference": {
+        "id": "demo-document:move-in-photos",
+        "label": "Illustrative move-in-photos; no actual file supplied",
+        "kind": "demo_placeholder",
+        "sources": []
+      },
+      "date": null,
+      "reviewState": "unreviewed",
+      "reviewNote": ""
+    },
+    {
+      "id": "move-out-photos",
+      "type": "photograph",
+      "sourceParty": "tenant",
+      "documentReference": {
+        "id": "demo-document:move-out-photos",
+        "label": "Illustrative move-out-photos; no actual file supplied",
+        "kind": "demo_placeholder",
+        "sources": []
+      },
+      "date": null,
+      "reviewState": "unreviewed",
+      "reviewNote": ""
+    },
+    {
+      "id": "landlord-messages",
+      "type": "message",
+      "sourceParty": "landlord",
+      "documentReference": {
+        "id": "demo-document:landlord-messages",
+        "label": "Illustrative landlord-messages; no actual file supplied",
+        "kind": "demo_placeholder",
+        "sources": []
+      },
+      "date": null,
+      "reviewState": "unreviewed",
+      "reviewNote": ""
+    }
+  ],
+  "rules": [],
+  "issues": [
+    {
+      "id": "painting",
+      "claimId": "deposit-claim",
+      "type": "painting_cost_justified",
+      "question": "Is the €700 painting deduction justified?",
+      "status": "open"
+    },
+    {
+      "id": "cleaning",
+      "claimId": "deposit-claim",
+      "type": "cleaning_cost_justified",
+      "question": "Is the €300 cleaning deduction justified?",
+      "status": "open"
+    },
+    {
+      "id": "damage",
+      "claimId": "deposit-claim",
+      "type": "tenant_damage_occurred",
+      "question": "Is there evidence of tenant-caused damage beyond ordinary wear?",
+      "status": "open"
+    },
+    {
+      "id": "costs",
+      "claimId": "deposit-claim",
+      "type": "claimed_cost_supported",
+      "question": "What evidence supports the claimed costs?",
+      "status": "open"
+    }
+  ],
+  "decisions": [],
+  "actions": [],
+  "riskTriggers": [],
+  "escalations": [],
+  "relationships": [
+    {
+      "type": "relevant_to",
+      "from": "deposit_paid",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "deposit_returned",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "deposit_paid",
+      "to": "cleaning"
+    },
+    {
+      "type": "relevant_to",
+      "from": "deposit_returned",
+      "to": "cleaning"
+    },
+    {
+      "type": "relevant_to",
+      "from": "painting_deduction",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "painting_deduction",
+      "to": "costs"
+    },
+    {
+      "type": "relevant_to",
+      "from": "cleaning_deduction",
+      "to": "cleaning"
+    },
+    {
+      "type": "relevant_to",
+      "from": "cleaning_deduction",
+      "to": "costs"
+    },
+    {
+      "type": "relevant_to",
+      "from": "tenancy_duration_months",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "tenancy_duration_months",
+      "to": "damage"
+    },
+    {
+      "type": "relevant_to",
+      "from": "tenant_caused_damage",
+      "to": "damage"
+    },
+    {
+      "type": "relevant_to",
+      "from": "tenant_caused_damage",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "damage_beyond_ordinary_wear",
+      "to": "damage"
+    },
+    {
+      "type": "relevant_to",
+      "from": "damage_beyond_ordinary_wear",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "painting_invoice_amount",
+      "to": "costs"
+    },
+    {
+      "type": "relevant_to",
+      "from": "painting_invoice_amount",
+      "to": "painting"
+    },
+    {
+      "type": "relevant_to",
+      "from": "cleaning_invoice_amount",
+      "to": "costs"
+    },
+    {
+      "type": "relevant_to",
+      "from": "cleaning_invoice_amount",
+      "to": "cleaning"
+    },
+    {
+      "type": "relevant_to",
+      "from": "landlord_damage_photographs_supplied",
+      "to": "damage"
+    },
+    {
+      "type": "relevant_to",
+      "from": "landlord_condition_report_supplied",
+      "to": "damage"
+    }
+  ]
+}
