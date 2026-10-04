@@ -12,8 +12,6 @@ npm run build
 npm start
 ```
 
-Open http://127.0.0.1:5173. The production server is already running after verification.
-
 **Exact demo:** Try an example case → Continue to evidence → Review my case → Assess my position. Show **€1,000 in dispute / Worth pursuing / Medium** and the three RTB sources. Click **Add landlord evidence** on the assessment. It adds the painting invoice and photographs, calls the backend again and prominently shows **BEFORE Worth pursuing → AFTER Uncertain**, with Medium confidence and the reasons for the change.
 
 No OpenAI key is needed for this presentation. The fixture interpreter is labelled in the interface. It does not set the position: the existing decision graph computes both assessments. Removing the landlord evidence also recomputes the initial position.
