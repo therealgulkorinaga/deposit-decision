@@ -1,32 +1,22 @@
-# React + TypeScript + Vite
+# Depositcheck
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A one-day Irish rental-deposit decision UI prototype built with React, TypeScript and Vite.
 
-Currently, two official plugins are available:
+## Run
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Verify
+
+```sh
+npm run build
+npm run lint
+npm test
+```
+
+Start with **Try an example case**, follow the steps to **Worth pursuing**, then **Add new evidence → Add landlord evidence → Review my case → Reassess my position** to see **Uncertain**.
+
+Data and files are browser-session only. All assessments, rules and comparable cases are mocked. No AI, retrieval, parsing, RTB ingestion or automated sending. See [UI logic](docs/UI_LOGIC.md) for state contracts and flow.
